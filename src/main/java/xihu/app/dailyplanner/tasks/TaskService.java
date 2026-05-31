@@ -2,38 +2,37 @@ package xihu.app.dailyplanner.tasks;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class TaskService {
-    private final List<Task> tasks = new ArrayList<>();
 
-    public List<Task> getTasks() {
-        return tasks;
+    private final TaskRepository taskRepository;
+
+    public TaskService(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 
-    public Task addSingleTask(String title) {
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
+    }
+
+    public Task addTask(String title) {
         String id = UUID.randomUUID().toString().substring(0, 8);
         Task newTask = new Task(id, title, false);
-        tasks.add(newTask);
-        return newTask;
+        return taskRepository.save(newTask);
     }
 
     public Task updateTask(String id, String newTitle) {
-        Task oldTask = tasks.stream()
-                .filter(task -> task.id().equals(id))
-                .findFirst()
-                .orElse(null);
+        Task oldTask = taskRepository.findById(id).orElse(null);
+
         if (oldTask != null) {
-            Task updatedTask = new Task(oldTask.id(), newTitle, oldTask.completed());
-            int index = tasks.indexOf(oldTask);
-            tasks.set(index, updatedTask);
-            return updatedTask;
+            // Zmiana na .isCompleted()
+            Task updatedTask = new Task(id, newTitle, oldTask.isCompleted());
+            return taskRepository.save(updatedTask);
         }
+
         return null;
     }
-
-
 }

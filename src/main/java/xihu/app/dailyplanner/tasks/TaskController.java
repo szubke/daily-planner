@@ -16,12 +16,12 @@ public class TaskController {
 
     @GetMapping("/allTasks")
     public List<Task> getAllTasks() {
-        return taskService.getTasks();
+        return taskService.getAllTasks();
     }
 
     @PostMapping("/addTask")
     public Task addTask(@RequestParam String title) {
-        return taskService.addSingleTask(title);
+        return taskService.addTask(title);
     }
 
     @PostMapping("/tasks/{id}")
