@@ -1,10 +1,7 @@
 package xihu.app.dailyplanner.tasks;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -25,6 +22,11 @@ public class TaskController {
     @PostMapping("/addTask")
     public Task addTask(@RequestParam String title) {
         return taskService.addSingleTask(title);
+    }
+
+    @PostMapping("/tasks/{id}")
+    public Task updateTask(@PathVariable String id, @RequestParam String title) {
+        return taskService.updateTask(id, title);
     }
 
 }

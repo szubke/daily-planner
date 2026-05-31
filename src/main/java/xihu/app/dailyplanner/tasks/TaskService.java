@@ -20,4 +20,20 @@ public class TaskService {
         tasks.add(newTask);
         return newTask;
     }
+
+    public Task updateTask(String id, String newTitle) {
+        Task oldTask = tasks.stream()
+                .filter(task -> task.id().equals(id))
+                .findFirst()
+                .orElse(null);
+        if (oldTask != null) {
+            Task updatedTask = new Task(oldTask.id(), newTitle, oldTask.completed());
+            int index = tasks.indexOf(oldTask);
+            tasks.set(index, updatedTask);
+            return updatedTask;
+        }
+        return null;
+    }
+
+
 }
