@@ -21,10 +21,10 @@ public class TaskController {
         return taskService.getAllTasks();
     }
 
-    @PostMapping("/addTask")
-    public ResponseEntity<Task> addTask(@RequestParam String title) {
+    @PostMapping("/tasks")
+    public ResponseEntity<Task> addTask(@RequestBody CreateTaskRequest request) {
 
-        Task task = taskService.addTask(title);
+        Task task = taskService.addTask(request.title());
         return ResponseEntity.status(HttpStatus.CREATED).body(task);
     }
 
