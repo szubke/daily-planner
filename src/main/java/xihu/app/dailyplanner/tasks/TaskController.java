@@ -1,6 +1,8 @@
 package xihu.app.dailyplanner.tasks;
 
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -20,8 +22,10 @@ public class TaskController {
     }
 
     @PostMapping("/addTask")
-    public Task addTask(@RequestParam String title) {
-        return taskService.addTask(title);
+    public ResponseEntity<Task> addTask(@RequestParam String title) {
+
+        Task task = taskService.addTask(title);
+        return ResponseEntity.status(HttpStatus.CREATED).body(task);
     }
 
     @PostMapping("/tasks/{id}")
@@ -35,8 +39,9 @@ public class TaskController {
     }
 
     @DeleteMapping("/tasks/{id}")
-    public void deleteTask(@PathVariable String id) {
+    public ResponseEntity<Void> deleteTask(@PathVariable String id) {
         taskService.deleteTask(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("tasks/{id}")
