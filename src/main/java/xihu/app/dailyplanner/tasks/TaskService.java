@@ -49,4 +49,8 @@ public class TaskService {
         Task taskToFind = taskRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return taskToFind;
     }
+
+    public Task getSingleTask(String id) {
+        return findTaskById(id);
+    }
 }
