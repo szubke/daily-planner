@@ -20,7 +20,6 @@ public class Task {
         this.completed = completed;
     }
 
-    // Klasyczne gettery JavaBean (Jackson teraz bez problemu zamieni je na JSON)
     public String getId() {
         return id;
     }
@@ -31,5 +30,9 @@ public class Task {
 
     public boolean isCompleted() {
         return completed;
+    }
+    public boolean setCompleted(boolean isCompleted){
+       return this.completed = isCompleted;
+
     }
 }

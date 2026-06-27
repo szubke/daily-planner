@@ -29,4 +29,8 @@ public class TaskController {
         return taskService.updateTask(id, title);
     }
 
+    @PostMapping("/tasks/{id}/completed")
+    public Task markAsCompleted(@PathVariable String id) {
+        return taskService.markAsCompleted(id);
+    }
 }

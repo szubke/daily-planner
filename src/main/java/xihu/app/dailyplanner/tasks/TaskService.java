@@ -35,4 +35,15 @@ public class TaskService {
 
         return null;
     }
+
+
+    public Task markAsCompleted(String id) {
+        Task oldTask = taskRepository.findById(id).orElse(null);
+
+        if (oldTask != null) {
+            Task updatedTask = new Task(id, oldTask.getTitle(), true);
+            return taskRepository.save(updatedTask);
+        }
+        return null;
+    }
 }
