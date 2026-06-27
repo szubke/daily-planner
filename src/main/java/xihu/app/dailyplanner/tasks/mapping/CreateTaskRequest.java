@@ -1,4 +1,4 @@
-package xihu.app.dailyplanner.tasks;
+package xihu.app.dailyplanner.tasks.mapping;
 
 
 import jakarta.validation.constraints.NotBlank;

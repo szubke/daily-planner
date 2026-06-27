@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import xihu.app.dailyplanner.tasks.mapping.CreateTaskRequest;
+import xihu.app.dailyplanner.tasks.mapping.UpdateTaskRequest;
 
 import java.util.List;
 
@@ -29,8 +31,11 @@ public class TaskController {
     }
 
     @PostMapping("/tasks/{id}")
-    public Task updateTask(@PathVariable String id, @RequestParam String title) {
-        return taskService.updateTask(id, title);
+    public ResponseEntity<Task> updateTask(@PathVariable String id, @Valid @RequestBody UpdateTaskRequest request) {
+
+        Task task = taskService.updateTask(id, request.title());
+        return ResponseEntity.status(HttpStatus.OK).body(task);
+
     }
 
     @PostMapping("/tasks/{id}/completed")
@@ -44,7 +49,7 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("tasks/{id}")
+    @GetMapping("/tasks/{id}")
     public Task getSingleTask(@PathVariable String id) {
         return taskService.getSingleTask(id);
     }
