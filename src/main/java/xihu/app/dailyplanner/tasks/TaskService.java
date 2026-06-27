@@ -27,24 +27,26 @@ public class TaskService {
     }
 
     public Task updateTask(String id, String newTitle) {
-        Task oldTask = taskRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if (oldTask != null) {
-            // Zmiana na .isCompleted()
-            Task updatedTask = new Task(id, newTitle, oldTask.isCompleted());
-            return taskRepository.save(updatedTask);
-        }
-
-        return null;
+        Task oldTask = findTaskById(id);
+        Task updatedTask = new Task(id, newTitle, oldTask.isCompleted());
+        return taskRepository.save(updatedTask);
     }
 
 
     public Task markAsCompleted(String id) {
-        Task oldTask = taskRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Task oldTask = findTaskById(id);
+        Task updatedTask = new Task(id, oldTask.getTitle(), true);
+        return taskRepository.save(updatedTask);
 
-        if (oldTask != null) {
-            Task updatedTask = new Task(id, oldTask.getTitle(), true);
-            return taskRepository.save(updatedTask);
-        }
-        return null;
+    }
+
+    public void deleteTask(String id) {
+        Task taskToDelete = findTaskById(id);
+        taskRepository.delete(taskToDelete);
+    }
+
+    public Task findTaskById(String id) {
+        Task taskToFind = taskRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return taskToFind;
     }
 }

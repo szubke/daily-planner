@@ -33,4 +33,10 @@ public class TaskController {
     public Task markAsCompleted(@PathVariable String id) {
         return taskService.markAsCompleted(id);
     }
+
+    @DeleteMapping("/tasks/{id}")
+    public void deleteTask(@PathVariable String id) {
+        taskService.deleteTask(id);
+    }
+
 }
