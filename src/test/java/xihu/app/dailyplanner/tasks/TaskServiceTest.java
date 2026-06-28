@@ -68,4 +68,18 @@ class TaskServiceTest {
         assertEquals("abc123", result.getId());
 
     }
+
+
+    @Test
+    void updateTask_updatesTitle() {
+        Task existing = new Task("abc123","mleko",false);
+        when(taskRepository.findById("abc123")).thenReturn(Optional.of(existing));
+        when(taskRepository.save(any(Task.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        Task result = taskService.updateTask("abc123","nowa");
+        assertFalse(result.isCompleted());
+        assertEquals("nowa", result.getTitle());
+        assertEquals("abc123", result.getId());
+    }
 }
