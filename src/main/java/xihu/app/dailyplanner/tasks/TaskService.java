@@ -3,6 +3,7 @@ package xihu.app.dailyplanner.tasks;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import xihu.app.dailyplanner.tasks.exceptions.TaskNotFoundException;
 
 import java.util.List;
 import java.util.UUID;
@@ -46,7 +47,7 @@ public class TaskService {
     }
 
     public Task findTaskById(String id) {
-        Task taskToFind = taskRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Task taskToFind = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
         return taskToFind;
     }
 
