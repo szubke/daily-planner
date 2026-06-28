@@ -1,10 +1,12 @@
 package xihu.app.dailyplanner.tasks;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import xihu.app.dailyplanner.tasks.exceptions.TaskNotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,22 +23,27 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public Task addTask(String title) {
+    public Task addTask(String title, LocalDate dueDate) {
         String id = UUID.randomUUID().toString().substring(0, 8);
-        Task newTask = new Task(id, title, false);
+        Task newTask = new Task(id, title, dueDate, false);
         return taskRepository.save(newTask);
     }
 
-    public Task updateTask(String id, String newTitle) {
+    public Task updateTaskTitle(String id, String newTitle) {
         Task oldTask = findTaskById(id);
-        Task updatedTask = new Task(id, newTitle, oldTask.isCompleted());
+        Task updatedTask = new Task(id, newTitle, oldTask.getDueDate(), oldTask.isCompleted());
+        return taskRepository.save(updatedTask);
+    }
+    public Task updateTaskDueDate(String id, LocalDate localDate) {
+        Task oldTask = findTaskById(id);
+        Task updatedTask = new Task(id, oldTask.getTitle(), localDate, oldTask.isCompleted());
         return taskRepository.save(updatedTask);
     }
 
 
     public Task markAsCompleted(String id) {
         Task oldTask = findTaskById(id);
-        Task updatedTask = new Task(id, oldTask.getTitle(), true);
+        Task updatedTask = new Task(id, oldTask.getTitle(),oldTask.getDueDate(),true);
         return taskRepository.save(updatedTask);
 
     }

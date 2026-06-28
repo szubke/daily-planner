@@ -9,7 +9,7 @@ import static org.mockito.Mockito.verify;
 import xihu.app.dailyplanner.tasks.exceptions.TaskNotFoundException;
 
 import java.util.Optional;
-
+import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,7 +32,7 @@ class TaskServiceTest {
         when(taskRepository.save(any(Task.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        Task result = taskService.addTask("Kup mleko");
+        Task result = taskService.addTask("Kup mleko",LocalDate.parse("2026-06-06"));
 
         assertEquals("Kup mleko", result.getTitle());
         assertFalse(result.isCompleted());
@@ -47,7 +47,7 @@ class TaskServiceTest {
 
     @Test
     void deleteTask_findsAndDeleteTask() {
-        Task existing = new Task("abc123","mleko",false);
+        Task existing = new Task("abc123","mleko",LocalDate.parse("2026-06-06"),false);
         when(taskRepository.findById("abc123")).thenReturn(Optional.of(existing));
         taskService.deleteTask("abc123");
 
@@ -57,7 +57,7 @@ class TaskServiceTest {
 
     @Test
     void markAsCompleted_setsCompletedToTrue() {
-        Task existing = new Task("abc123","mleko",false);
+        Task existing = new Task("abc123","mleko",LocalDate.parse("2026-06-06"),false);
         when(taskRepository.findById("abc123")).thenReturn(Optional.of(existing));
         when(taskRepository.save(any(Task.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
@@ -66,18 +66,19 @@ class TaskServiceTest {
         assertTrue(result.isCompleted());
         assertEquals("mleko", result.getTitle());
         assertEquals("abc123", result.getId());
+        assertEquals(LocalDate.parse("2026-06-06"), result.getDueDate());
 
     }
 
 
     @Test
-    void updateTask_updatesTitle() {
-        Task existing = new Task("abc123","mleko",false);
+    void updateTaskTitle_updatesTitle() {
+        Task existing = new Task("abc123","mleko",LocalDate.parse("2026-06-06"),false);
         when(taskRepository.findById("abc123")).thenReturn(Optional.of(existing));
         when(taskRepository.save(any(Task.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        Task result = taskService.updateTask("abc123","nowa");
+        Task result = taskService.updateTaskTitle("abc123","nowa");
         assertFalse(result.isCompleted());
         assertEquals("nowa", result.getTitle());
         assertEquals("abc123", result.getId());

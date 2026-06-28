@@ -3,6 +3,8 @@ package xihu.app.dailyplanner.tasks;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+import java.time.LocalDate;
+
 @Entity
 public class Task {
 
@@ -10,14 +12,16 @@ public class Task {
     private String id;
     private String title;
     private boolean completed;
+    private LocalDate dueDate;
 
     public Task() {
     }
 
-    public Task(String id, String title, boolean completed) {
+    public Task(String id, String title, LocalDate dueDate, boolean completed) {
         this.id = id;
         this.title = title;
         this.completed = completed;
+        this.dueDate = dueDate;
     }
 
     public String getId() {
@@ -34,5 +38,8 @@ public class Task {
     public boolean setCompleted(boolean isCompleted){
        return this.completed = isCompleted;
 
+    }
+    public LocalDate getDueDate(){
+        return dueDate;
     }
 }

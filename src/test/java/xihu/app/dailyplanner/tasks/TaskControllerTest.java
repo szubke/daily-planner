@@ -40,7 +40,7 @@ class TaskControllerTest {
     void addTask_returns400WhenValidationFails() throws Exception {
         mockMvc.perform(post("/tasks")
                         .contentType(APPLICATION_JSON)
-                        .content("{\"title\":\"\"}"))
+                        .content("{\"title\":\"\",\"dueDate\":\"2026-07-01\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("title:must not be blank"));
     }
