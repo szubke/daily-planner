@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.Mockito.verify;
 import xihu.app.dailyplanner.tasks.exceptions.TaskNotFoundException;
 
 import java.util.Optional;
@@ -41,5 +42,14 @@ class TaskServiceTest {
     void findTaskById_throwsWhenTaskNotFound() {
         when(taskRepository.findById("zle-id")).thenReturn(Optional.empty());
         assertThrows(TaskNotFoundException.class, () -> taskService.findTaskById("zle-id"));
+    }
+
+    @Test
+    void deleteTask_findsAndDeleteTask() {
+        Task existing = new Task("abc123","mleko",false);
+        when(taskRepository.findById("abc123")).thenReturn(Optional.of(existing));
+        taskService.deleteTask("abc123");
+
+        verify(taskRepository).delete(existing);
     }
 }
