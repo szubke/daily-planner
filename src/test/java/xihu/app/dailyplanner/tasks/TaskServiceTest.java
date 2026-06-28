@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,5 +52,20 @@ class TaskServiceTest {
         taskService.deleteTask("abc123");
 
         verify(taskRepository).delete(existing);
+    }
+
+
+    @Test
+    void markAsCompleted_setsCompletedToTrue() {
+        Task existing = new Task("abc123","mleko",false);
+        when(taskRepository.findById("abc123")).thenReturn(Optional.of(existing));
+        when(taskRepository.save(any(Task.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        Task result = taskService.markAsCompleted("abc123");
+        assertTrue(result.isCompleted());
+        assertEquals("mleko", result.getTitle());
+        assertEquals("abc123", result.getId());
+
     }
 }
